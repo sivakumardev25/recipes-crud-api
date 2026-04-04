@@ -15,6 +15,11 @@ exports.createRecipe = async (req, res) => {
       });
     }
 
+    // Check if user already exists
+    const existingRecipe = await Recipe.findOne({ name });
+    if (existingRecipe) {
+      return res.status(400).json({ message: "Item already exists" });
+    }
     //create a new recipe
     const newRecipe = await Recipe.create({
       name,

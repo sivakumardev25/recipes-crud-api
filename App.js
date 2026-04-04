@@ -1,11 +1,11 @@
 //import the express module
 const express = require("express");
 
-//import the .env file
-require("dotenv").config();
-
 //create the app
 const app = express();
+
+//import the .env file
+require("dotenv").config();
 
 //middleware to parse JSON
 app.use(express.json());
@@ -30,3 +30,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+module.exports = app;
