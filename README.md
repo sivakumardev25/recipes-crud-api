@@ -29,4 +29,4 @@ Add environment variables in Render dashboard
 
 ## Render
 
-Render deployed URL : https://recipes-crud-api-yfjp.onrender.com
+Render deployed URL : https://recipes-crud-api-wpts.onrender.com
