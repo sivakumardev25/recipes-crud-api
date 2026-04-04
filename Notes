@@ -1,0 +1,7 @@
+npm init -y
+npm install express mongoose dotenv cors
+npm install nodemon --save-dev
+
+//add
+    "start": "node App.js",
+    "dev": "nodemon App.js"
