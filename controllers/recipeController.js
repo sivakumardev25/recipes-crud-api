@@ -1,4 +1,4 @@
-const Recipe = require("../models/recipeModels");
+const Recipe = require("../models/recipeModel");
 
 //Create a new recipe
 
@@ -8,7 +8,7 @@ exports.createRecipe = async (req, res) => {
     const { name, ingredients, instructions, cookingTime } = req.body;
 
     //validation
-    if (!name || !ingredients || !instructions || !cookingTime) {
+    if (!name || !ingredients || !instructions || !cookingTime === undefined) {
       return res.status(400).json({
         success: false,
         message: "Name, ingredients, instructions and cookingTime are required",
@@ -33,7 +33,7 @@ exports.createRecipe = async (req, res) => {
     console.error("Error creating recipe:", error.message);
     res.status(500).json({
       success: false,
-      message: "Server error",
+      message: error.message,
     });
   }
 };
@@ -45,7 +45,7 @@ exports.getAllRecipes = async (req, res) => {
     const recipes = await Recipe.find();
     res.status(200).json({
       success: true,
-      count: recipes.count,
+      count: recipes.length,
       message: "All recipes fetched successfully",
       data: recipes,
     });
@@ -61,15 +61,18 @@ exports.getAllRecipes = async (req, res) => {
 //Get a single recipe by ID
 exports.getRecipeById = async (req, res) => {
   try {
-    const recipes = await Recipe.findById(req.params.id);
+    const recipe = await Recipe.findById(req.params.id);
 
-    if (!recipes) {
+    if (!recipe) {
       return res.status(404).json({
         success: false,
         message: "Recipe not found",
       });
     }
-    res.status(200).json(recipe);
+    res.status(200).json({
+      success: true,
+      data: recipe,
+    });
   } catch (error) {
     console.error("Error fetching recipe:", error.message);
     res.status(500).json({
@@ -85,6 +88,7 @@ exports.updateRecipeById = async (req, res) => {
     // find the recipe by ID and update it with the new data from the request body
     const recipe = await Recipe.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
+      runValidators: true,
     });
 
     // if the recipe is not found
